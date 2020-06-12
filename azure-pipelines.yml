@@ -4,7 +4,10 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/go
 
 trigger:
-- master
+  - master
+
+pr:
+  - master
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -21,5 +24,12 @@ steps:
 - task: CmdLine@2
   displayName: 'Run tests'
   inputs:
-    script: 'make -C monitor test'
+    script: 'make -C monitor test_ci'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
+- task: CmdLine@2
+  displayName: 'Upload Coverage'
+  env:
+    CODECOV_TOKEN: $(CODECOV_TOKEN)
+  inputs:
+    script: bash <(curl -s https://codecov.io/bash)
+    workingDirectory: '$(System.DefaultWorkingDirectory)/monitor'
