@@ -2,6 +2,7 @@ package webserver
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 
@@ -23,10 +24,14 @@ func statsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // RunServer run the main API to expose server usage
-func RunServer() {
+func RunServer(config Configuration) {
 	defer log.Flush()
 
 	log.Info("Starting server")
 	http.HandleFunc("/api/stats", statsHandler)
-	http.ListenAndServe(":5000", nil)
+
+	listenFullHost := fmt.Sprintf("%s:%d", config.Server.Host, config.Server.Port)
+	log.Debugf("Server listening on %q", listenFullHost)
+
+	http.ListenAndServe(listenFullHost, nil)
 }

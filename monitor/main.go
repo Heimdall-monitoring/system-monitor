@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"github.com/aHugues/system-monitor/monitor/webserver"
 )
 
@@ -16,6 +18,16 @@ func main() {
 	// 		fmt.Println(dev.ToString())
 	// 	}
 	// }
+	// config := webserver.Configuration{
+	// 	Server: webserver.Server{
+	// 		Host: "127.0.0.1",
+	// 		Port: 5000,
+	// 	},
+	// }
 
-	webserver.RunServer()
+	config, err := webserver.ReadConfigJSON("config.json")
+	if err != nil {
+		log.Fatalf("Error reading config file %q", err)
+	}
+	webserver.RunServer(config)
 }
