@@ -1,8 +1,9 @@
 package main
 
 import (
-	"log"
+	log "github.com/cihub/seelog"
 
+	"github.com/aHugues/system-monitor/monitor/utils"
 	"github.com/aHugues/system-monitor/monitor/webserver"
 )
 
@@ -25,9 +26,10 @@ func main() {
 	// 	},
 	// }
 
-	config, err := webserver.ReadConfigJSON("config.json")
+	config, err := utils.ReadConfigJSON("config.json")
 	if err != nil {
-		log.Fatalf("Error reading config file %q", err)
+		log.Warn("Impossible to read from JSON configuration, using default config")
+		config = utils.NewConfig()
 	}
 	webserver.RunServer(config)
 }
