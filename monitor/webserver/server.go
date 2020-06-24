@@ -12,10 +12,10 @@ import (
 )
 
 // statsHandler returns a JSON array with the data from the various system probes
-func statsHandler(w http.ResponseWriter, r *http.Request) {
+func statsHandler(config utils.ProbesConfig, w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	fullStats := getFullStats()
+	fullStats := getFullStats(config)
 
 	b, err := json.Marshal(fullStats)
 	if err != nil {
@@ -30,7 +30,9 @@ func RunServer(config utils.FullConfiguration) {
 	defer log.Flush()
 
 	log.Info("Starting server")
-	http.HandleFunc("/api/stats", statsHandler)
+	http.HandleFunc("/api/stats", func(w http.ResponseWriter, r *http.Request) {
+		statsHandler(config.Probes, w, r)
+	})
 
 	listenFullHost := fmt.Sprintf("%s:%d", config.Server.Host, config.Server.Port)
 	log.Debugf("Server listening on %q", listenFullHost)

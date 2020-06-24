@@ -22,10 +22,10 @@ type LogConfig struct {
 
 // ProbesConfig handles the configuration of system probes
 type ProbesConfig struct {
-	DiskUsage  bool `json:"disk-usage"`
-	RAMUsage   bool `json:"ram-usage"`
-	SystemInfo bool `json:"system-info"`
-	Systemd    bool `json:"systemd"`
+	DiskUsage       bool     `json:"disk-usage"`
+	RAMUsage        bool     `json:"ram-usage"`
+	SystemInfo      bool     `json:"system-info"`
+	SystemdServices []string `json:"systemd-services"`
 }
 
 // FullConfiguration handles the entire configuration of the server
@@ -48,10 +48,10 @@ func NewConfig() FullConfiguration {
 			Level: "INFO",
 		},
 		Probes: ProbesConfig{
-			DiskUsage:  true,
-			RAMUsage:   true,
-			SystemInfo: true,
-			Systemd:    true,
+			DiskUsage:       true,
+			RAMUsage:        true,
+			SystemInfo:      true,
+			SystemdServices: []string{},
 		},
 	}
 }
