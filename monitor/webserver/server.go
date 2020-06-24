@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/aHugues/system-monitor/monitor/utils"
+
 	log "github.com/cihub/seelog"
 )
 
@@ -24,7 +26,7 @@ func statsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // RunServer run the main API to expose server usage
-func RunServer(config Configuration) {
+func RunServer(config utils.FullConfiguration) {
 	defer log.Flush()
 
 	log.Info("Starting server")
