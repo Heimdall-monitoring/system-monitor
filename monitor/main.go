@@ -1,6 +1,8 @@
 package main
 
 import (
+	"flag"
+
 	log "github.com/cihub/seelog"
 
 	"github.com/aHugues/system-monitor/monitor/utils"
@@ -8,25 +10,10 @@ import (
 )
 
 func main() {
-	// ramUsage := probes.GetRAMUsage()
-	// fmt.Printf("Ram usage: %d total, %d used, %d free, %d shared\n", ramUsage.Available, ramUsage.Used, ramUsage.Free, ramUsage.Shared)
+	configPath := flag.String("config", "config.json", "Path to the JSON configuration file")
+	flag.Parse()
 
-	// devices := probes.GetUsageStats(probes.CommandRunner)
-	// if len(devices) == 0 {
-	// 	fmt.Println("No storage devices found.")
-	// } else {
-	// 	for _, dev := range devices {
-	// 		fmt.Println(dev.ToString())
-	// 	}
-	// }
-	// config := webserver.Configuration{
-	// 	Server: webserver.Server{
-	// 		Host: "127.0.0.1",
-	// 		Port: 5000,
-	// 	},
-	// }
-
-	config, err := utils.ReadConfigJSON("config.json")
+	config, err := utils.ReadConfigJSON(*configPath)
 	if err != nil {
 		log.Warn("Impossible to read from JSON configuration, using default config")
 		config = utils.NewConfig()

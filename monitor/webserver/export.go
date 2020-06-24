@@ -2,27 +2,34 @@ package webserver
 
 import (
 	"github.com/aHugues/system-monitor/monitor/probes"
+	"github.com/aHugues/system-monitor/monitor/utils"
 )
 
 // fullStats represent the complete stats returned to the user
 type fullStats struct {
-	DiskUsage  []probes.DeviceStat `json:"disk-usage"`
-	RAMUsage   probes.RAMStats     `json:"ram-usage"`
-	SystemInfo probes.SystemInfo   `json:"system-info"`
-	Services   map[string]bool     `json:"services-status"`
+	DiskUsage  []probes.DeviceStat `json:"disk-usage,omitempty"`
+	RAMUsage   probes.RAMStats     `json:"ram-usage,omitempty"`
+	SystemInfo probes.SystemInfo   `json:"system-info,omitempty"`
+	Services   map[string]bool     `json:"services-status,omitempty"`
 }
 
-func getFullStats() fullStats {
-	services := []string{"sshd"}
-	RAMUsage := probes.GetRAMUsage(probes.LinuxCommandRunner{})
-	diskStats := probes.GetUsageStats(probes.LinuxCommandRunner{})
-	systemInfo := probes.GetSystemInfo(probes.LinuxCommandRunner{})
-	serviceStatuses := probes.GetServicesStatuses(probes.LinuxCommandRunner{}, services)
-	fullStats := fullStats{
-		DiskUsage:  diskStats,
-		RAMUsage:   RAMUsage,
-		SystemInfo: systemInfo,
-		Services:   serviceStatuses,
+func getFullStats(config utils.ProbesConfig) fullStats {
+	fullStats := fullStats{}
+
+	if len(config.SystemdServices) > 0 {
+		fullStats.Services = probes.GetServicesStatuses(probes.LinuxCommandRunner{}, config.SystemdServices)
+	}
+
+	if config.RAMUsage {
+		fullStats.RAMUsage = probes.GetRAMUsage(probes.LinuxCommandRunner{})
+	}
+
+	if config.DiskUsage {
+		fullStats.DiskUsage = probes.GetUsageStats(probes.LinuxCommandRunner{})
+	}
+
+	if config.SystemInfo {
+		fullStats.SystemInfo = probes.GetSystemInfo(probes.LinuxCommandRunner{})
 	}
 	return fullStats
 }
