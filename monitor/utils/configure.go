@@ -26,6 +26,7 @@ type ProbesConfig struct {
 	RAMUsage        bool     `json:"ram-usage"`
 	SystemInfo      bool     `json:"system-info"`
 	SystemdServices []string `json:"systemd-services"`
+	Uptime          bool     `json:"uptime"`
 }
 
 // FullConfiguration handles the entire configuration of the server
@@ -52,6 +53,7 @@ func NewConfig() FullConfiguration {
 			RAMUsage:        true,
 			SystemInfo:      true,
 			SystemdServices: []string{},
+			Uptime:          true,
 		},
 	}
 }

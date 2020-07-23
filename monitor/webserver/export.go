@@ -11,6 +11,7 @@ type fullStats struct {
 	RAMUsage   probes.RAMStats     `json:"ram-usage,omitempty"`
 	SystemInfo probes.SystemInfo   `json:"system-info,omitempty"`
 	Services   map[string]bool     `json:"services-status,omitempty"`
+	Uptime     int64               `json:"uptime,omitempty"`
 }
 
 func getFullStats(config utils.ProbesConfig) fullStats {
@@ -30,6 +31,13 @@ func getFullStats(config utils.ProbesConfig) fullStats {
 
 	if config.SystemInfo {
 		fullStats.SystemInfo = probes.GetSystemInfo(probes.LinuxCommandRunner{})
+	}
+
+	if config.Uptime {
+		uptime, err := probes.GetUptime()
+		if err == nil {
+			fullStats.Uptime = uptime
+		}
 	}
 	return fullStats
 }
