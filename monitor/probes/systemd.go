@@ -1,6 +1,6 @@
 package probes
 
-import log "github.com/cihub/seelog"
+import log "github.com/sirupsen/logrus"
 
 // GetServiceStatus returns True if the probed status is running
 func GetServiceStatus(runner commandRunner, service string) bool {

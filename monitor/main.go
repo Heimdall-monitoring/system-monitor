@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 
-	log "github.com/cihub/seelog"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/aHugues/system-monitor/monitor/utils"
 	"github.com/aHugues/system-monitor/monitor/webserver"

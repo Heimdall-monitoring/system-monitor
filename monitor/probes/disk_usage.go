@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	log "github.com/cihub/seelog"
+	log "github.com/sirupsen/logrus"
 )
 
 // DeviceStat represents the usage stats for a device

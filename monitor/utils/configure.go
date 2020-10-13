@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
-	log "github.com/cihub/seelog"
+	log "github.com/sirupsen/logrus"
 )
 
 // ServerConfig handles the configuration for the web service

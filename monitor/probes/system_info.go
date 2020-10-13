@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"regexp"
 
-	log "github.com/cihub/seelog"
+	log "github.com/sirupsen/logrus"
 )
 
 // SystemInfo represent the global information for the operating system

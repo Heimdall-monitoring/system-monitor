@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"os/exec"
 
-	log "github.com/cihub/seelog"
+	log "github.com/sirupsen/logrus"
 )
 
 // CommandResult stores the result of an executed command

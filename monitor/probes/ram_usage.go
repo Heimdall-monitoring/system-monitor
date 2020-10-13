@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	log "github.com/cihub/seelog"
+	log "github.com/sirupsen/logrus"
 )
 
 // RAMStats represent the stats for RAM usage
