@@ -9,11 +9,11 @@ clean:
 	rm -r build
 
 run:
-	./build/monitor
+	./build/monitor --config=build/config.json --debug
 
 test:
 	mkdir -p build/
-	go test -v -coverprofile=build/c.out ./...
+	go test -parallel 10 -v -coverprofile=build/c.out ./...
 	go tool cover -html=build/c.out -o build/coverage.html
 
 test_ci:

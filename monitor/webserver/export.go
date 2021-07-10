@@ -14,30 +14,38 @@ type fullStats struct {
 	Uptime     int64               `json:"uptime,omitempty"`
 }
 
+func (obj *fullStats) update(data fullStats) {
+	obj.DiskUsage = data.DiskUsage
+	obj.RAMUsage = data.RAMUsage
+	obj.SystemInfo = data.SystemInfo
+	obj.Services = data.Services
+	obj.Uptime = data.Uptime
+}
+
 func getFullStats(config utils.ProbesConfig) fullStats {
 	fullStats := fullStats{}
 
-	if len(config.SystemdServices) > 0 {
-		fullStats.Services = probes.GetServicesStatuses(probes.LinuxCommandRunner{}, config.SystemdServices)
-	}
+	// if len(config.SystemdServices) > 0 {
+	// 	fullStats.Services = probes.GetServicesStatuses(probes.LinuxCommandRunner{}, config.SystemdServices)
+	// }
 
-	if config.RAMUsage {
-		fullStats.RAMUsage = probes.GetRAMUsage(probes.LinuxCommandRunner{})
-	}
+	// if config.RAMUsage {
+	// 	fullStats.RAMUsage = probes.GetRAMUsage(probes.LinuxCommandRunner{})
+	// }
 
-	if config.DiskUsage {
-		fullStats.DiskUsage = probes.GetUsageStats(probes.LinuxCommandRunner{})
-	}
+	// if config.DiskUsage {
+	// 	fullStats.DiskUsage = probes.GetUsageStats(probes.LinuxCommandRunner{})
+	// }
 
-	if config.SystemInfo {
-		fullStats.SystemInfo = probes.GetSystemInfo(probes.LinuxCommandRunner{})
-	}
+	// if config.SystemInfo {
+	// 	fullStats.SystemInfo = probes.GetSystemInfo(probes.LinuxCommandRunner{})
+	// }
 
-	if config.Uptime {
-		uptime, err := probes.GetUptime()
-		if err == nil {
-			fullStats.Uptime = uptime
-		}
-	}
+	// if config.Uptime {
+	// 	uptime, err := probes.GetUptime()
+	// 	if err == nil {
+	// 		fullStats.Uptime = uptime
+	// 	}
+	// }
 	return fullStats
 }

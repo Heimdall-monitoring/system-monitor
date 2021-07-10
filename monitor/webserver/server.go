@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/aHugues/system-monitor/monitor/utils"
 
@@ -12,12 +13,10 @@ import (
 )
 
 // statsHandler returns a JSON array with the data from the various system probes
-func statsHandler(config utils.ProbesConfig, w http.ResponseWriter, r *http.Request) {
+func statsHandler(data fullStats, w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	fullStats := getFullStats(config)
-
-	b, err := json.Marshal(fullStats)
+	b, err := json.Marshal(data)
 	if err != nil {
 		log.Error(err)
 		os.Exit(1)
@@ -38,12 +37,24 @@ func displayConfig(config utils.ProbesConfig, w http.ResponseWriter, r *http.Req
 	}
 }
 
+func updateData(config utils.ProbesConfig, refreshPeriod int, data *fullStats) {
+	for {
+		log.Debug("Updating current data")
+		newData := getFullStats(config)
+		data.update(newData)
+		time.Sleep(time.Duration(refreshPeriod) * time.Second)
+	}
+}
+
 // RunServer run the main API to expose server usage
 func RunServer(config utils.FullConfiguration) {
 
+	currentData := new(fullStats)
+	go updateData(config.Probes, config.Server.RefreshPeriod, currentData)
+
 	log.Info("Starting server")
 	http.HandleFunc("/api/stats", func(w http.ResponseWriter, r *http.Request) {
-		statsHandler(config.Probes, w, r)
+		statsHandler(*currentData, w, r)
 	})
 	http.HandleFunc("/api/config", func(w http.ResponseWriter, r *http.Request) {
 		displayConfig(config.Probes, w, r)
@@ -52,5 +63,8 @@ func RunServer(config utils.FullConfiguration) {
 	listenFullHost := fmt.Sprintf("%s:%d", config.Server.Host, config.Server.Port)
 	log.Debugf("Server listening on %q", listenFullHost)
 
-	http.ListenAndServe(listenFullHost, nil)
+	err := http.ListenAndServe(listenFullHost, nil)
+	if err != nil {
+		log.Error(err)
+	}
 }

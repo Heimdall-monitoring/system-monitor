@@ -11,7 +11,12 @@ import (
 
 func main() {
 	configPath := flag.String("config", "config.json", "Path to the JSON configuration file")
+	debug := flag.Bool("debug", false, "Start application in debug mode")
 	flag.Parse()
+
+	if *debug {
+		log.SetLevel(log.DebugLevel)
+	}
 
 	config, err := utils.ReadConfigJSON(*configPath)
 	if err != nil {
@@ -19,4 +24,5 @@ func main() {
 		config = utils.NewConfig()
 	}
 	webserver.RunServer(config)
+	log.Info("Stopping server")
 }

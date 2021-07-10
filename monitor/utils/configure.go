@@ -9,10 +9,11 @@ import (
 
 // ServerConfig handles the configuration for the web service
 type ServerConfig struct {
-	ListenMode string `json:"listen-mode"`
-	Host       string `json:"host"`
-	Port       int    `json:"port"`
-	Socket     string `json:"socket"`
+	ListenMode    string `json:"listen-mode"`
+	Host          string `json:"host"`
+	Port          int    `json:"port"`
+	Socket        string `json:"socket"`
+	RefreshPeriod int    `json:"refresh-period"`
 }
 
 // LogConfig handles the configuration for the logger
@@ -40,10 +41,11 @@ type FullConfiguration struct {
 func NewConfig() FullConfiguration {
 	return FullConfiguration{
 		Server: ServerConfig{
-			ListenMode: "port",
-			Host:       "127.0.0.1",
-			Port:       5000,
-			Socket:     "",
+			ListenMode:    "port",
+			Host:          "127.0.0.1",
+			Port:          5000,
+			Socket:        "",
+			RefreshPeriod: 5,
 		},
 		Log: LogConfig{
 			Level: "INFO",
